@@ -13,8 +13,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const countryRouter = require('./Routers/contryRouter')();
+const brandRouter = require('./Routers/brandRouter')();
 
 app.use('/api', countryRouter);
+app.use('/api', brandRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
