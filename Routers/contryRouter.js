@@ -6,13 +6,13 @@ function routes() {
   const controller = countriesController();
 
   countryRouter.route('/countrys')
-    .get(controller.get);
-  // .post(controller.post);
+    .get(controller.get)
+    .post(controller.post);
 
   countryRouter.route('/countrys/:Id')
-    .get(controller.get);
-  // .put(controller.put)
-  // .delete(controller.remove);
+    .get(controller.get)
+    .put(controller.put)
+    .delete(controller.remove);
 
   return countryRouter;
 }

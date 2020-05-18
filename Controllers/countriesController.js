@@ -19,41 +19,41 @@ const countriesController = () => {
     }
   };
 
-  // const post = async (req, res) => {
-  //   try {
-  //     return await db.modify(req, res, 'AddActor', 'FirstName', 'LastName');
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500);
-  //     return res.send('Unable to create.');
-  //   }
-  // };
+  const post = async (req, res) => {
+    try {
+      return await db.modify(req, res, 'AddCountry', 'Country');
+    } catch (err) {
+      console.log(err);
+      res.status(500);
+      return res.send('Unable to create.');
+    }
+  };
 
-  // const put = async (req, res) => {
-  //   try {
-  //     return await db.modify(req, res, 'UpdateActor', 'FirstName', 'LastName');
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500);
-  //     return res.send('Unable to update.');
-  //   }
-  // };
+  const put = async (req, res) => {
+    try {
+      return await db.modify(req, res, 'UpdateCountry', 'Country');
+    } catch (err) {
+      console.log(err);
+      res.status(500);
+      return res.send('Unable to update.');
+    }
+  };
 
-  // const remove = async (req, res) => {
-  //   try {
-  //     return await db.modify(req, res, 'DeleteActor');
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500);
-  //     return res.send('Unable to delete.');
-  //   }
-  // };
+  const remove = async (req, res) => {
+    try {
+      return await db.modify(req, res, 'DeleteCountry');
+    } catch (err) {
+      console.log(err);
+      res.status(500);
+      return res.send('Unable to delete.');
+    }
+  };
 
   return {
     get,
-    // post,
-    // put,
-    // remove,
+    post,
+    put,
+    remove,
   };
 };
 

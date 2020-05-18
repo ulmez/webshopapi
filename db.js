@@ -90,7 +90,7 @@ const get = async (req, res, endpoint, hateoas = [], ...params) => {
     });
 
     const query = req.params.Id > 0
-      ? `EXEC Get${endpoint}ById ${req.params.Id}${parameters}`
+      ? `EXEC Get${endpoint} ${req.params.Id}${parameters}`
       : `EXEC Get${endpoint}s ${parameters.length < 2 ? '' : parameters.substr(2)}`;
 
     await sql.connect(config);

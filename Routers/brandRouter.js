@@ -6,13 +6,13 @@ function routes() {
   const controller = brandsController();
 
   brandRouter.route('/brands')
-    .get(controller.get);
-  // .post(controller.post);
+    .get(controller.get)
+    .post(controller.post);
 
   brandRouter.route('/brands/:Id')
-    .get(controller.get);
-  // .put(controller.put)
-  // .delete(controller.remove);
+    .get(controller.get)
+    .put(controller.put)
+    .delete(controller.remove);
 
   return brandRouter;
 }
