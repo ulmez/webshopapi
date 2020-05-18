@@ -15,10 +15,12 @@ app.use(bodyParser.json());
 const countryRouter = require('./Routers/contryRouter')();
 const brandRouter = require('./Routers/brandRouter')();
 const categoryRouter = require('./Routers/categoryRouter')();
+const addressRouter = require('./Routers/addressRouter')();
 
 app.use('/api', countryRouter);
 app.use('/api', brandRouter);
 app.use('/api', categoryRouter);
+app.use('/api', addressRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
