@@ -2,10 +2,10 @@
 /* eslint-disable no-param-reassign */
 const db = require('../db');
 
-const addressesController = () => {
+const favoritesController = () => {
   const get = async (req, res) => {
     try {
-      const records = await db.get(req, res, 'address', true);
+      const records = await db.get(req, res, 'favorite', false);
 
       if (records.length === 0) {
         res.status(404);
@@ -21,7 +21,7 @@ const addressesController = () => {
 
   const post = async (req, res) => {
     try {
-      return await db.modify(req, res, 'AddAddress', true, 'Address1', 'Address2', 'City', 'Zip', 'CountryId', 'Company');
+      return await db.modify(req, res, 'AddFavorite', false, req.params.CustomerId, req.params.ProductId);
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -29,19 +29,9 @@ const addressesController = () => {
     }
   };
 
-  const put = async (req, res) => {
-    try {
-      return await db.modify(req, res, 'UpdateAddress', true, 'Address1', 'Zip', 'City', 'CountryId');
-    } catch (err) {
-      console.log(err);
-      res.status(500);
-      return res.send('Unable to update.');
-    }
-  };
-
   const remove = async (req, res) => {
     try {
-      return await db.modify(req, res, 'DeleteAddress', true);
+      return await db.modify(req, res, 'DeleteFavorite', false, req.params.CustomerId, req.params.ProductId);
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -52,9 +42,8 @@ const addressesController = () => {
   return {
     get,
     post,
-    put,
     remove,
   };
 };
 
-module.exports = addressesController;
+module.exports = favoritesController;

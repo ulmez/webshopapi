@@ -5,7 +5,7 @@ const db = require('../db');
 const categoriesController = () => {
   const get = async (req, res) => {
     try {
-      const records = await db.get(req, res, 'category');
+      const records = await db.get(req, res, 'category', true);
 
       if (records.length === 0) {
         res.status(404);
@@ -21,7 +21,7 @@ const categoriesController = () => {
 
   const post = async (req, res) => {
     try {
-      return await db.modify(req, res, 'AddCategory', 'Category', 'Icon');
+      return await db.modify(req, res, 'AddCategory', true, 'Category', 'Icon');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -31,7 +31,7 @@ const categoriesController = () => {
 
   const put = async (req, res) => {
     try {
-      return await db.modify(req, res, 'UpdateCategory', 'Category', 'Icon');
+      return await db.modify(req, res, 'UpdateCategory', true, 'Category', 'Icon');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -41,7 +41,7 @@ const categoriesController = () => {
 
   const remove = async (req, res) => {
     try {
-      return await db.modify(req, res, 'DeleteCategory');
+      return await db.modify(req, res, 'DeleteCategory', true);
     } catch (err) {
       console.log(err);
       res.status(500);

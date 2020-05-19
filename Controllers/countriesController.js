@@ -5,7 +5,7 @@ const db = require('../db');
 const countriesController = () => {
   const get = async (req, res) => {
     try {
-      const records = await db.get(req, res, 'country');
+      const records = await db.get(req, res, 'country', true);
 
       if (records.length === 0) {
         res.status(404);
@@ -21,7 +21,7 @@ const countriesController = () => {
 
   const post = async (req, res) => {
     try {
-      return await db.modify(req, res, 'AddCountry', 'Country');
+      return await db.modify(req, res, 'AddCountry', true, 'Country');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -31,7 +31,7 @@ const countriesController = () => {
 
   const put = async (req, res) => {
     try {
-      return await db.modify(req, res, 'UpdateCountry', 'Country');
+      return await db.modify(req, res, 'UpdateCountry', true, 'Country');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -41,7 +41,7 @@ const countriesController = () => {
 
   const remove = async (req, res) => {
     try {
-      return await db.modify(req, res, 'DeleteCountry');
+      return await db.modify(req, res, 'DeleteCountry', true);
     } catch (err) {
       console.log(err);
       res.status(500);

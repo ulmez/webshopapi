@@ -5,7 +5,7 @@ const db = require('../db');
 const customersController = () => {
   const get = async (req, res) => {
     try {
-      const records = await db.get(req, res, 'customer');
+      const records = await db.get(req, res, 'customer', true);
 
       if (records.length === 0) {
         res.status(404);
@@ -21,7 +21,7 @@ const customersController = () => {
 
   const post = async (req, res) => {
     try {
-      return await db.modify(req, res, 'AddCustomer', 'Email', 'FirstName', 'LastName', 'Phone', 'PasswordHash', 'Token', 'ShippingAddressId', 'InvoiceAddressId', 'AvatarUrl', 'RewardPoints');
+      return await db.modify(req, res, 'AddCustomer', true, 'Email', 'FirstName', 'LastName', 'Phone', 'PasswordHash', 'Token', 'ShippingAddressId', 'InvoiceAddressId', 'AvatarUrl', 'RewardPoints');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -31,7 +31,7 @@ const customersController = () => {
 
   const put = async (req, res) => {
     try {
-      return await db.modify(req, res, 'UpdateCustomer', 'Email', 'FirstName', 'LastName', 'Phone', 'PasswordHash', 'Token', 'ShippingAddressId', 'InvoiceAddressId', 'AvatarUrl', 'RewardPoints');
+      return await db.modify(req, res, 'UpdateCustomer', true, 'Email', 'FirstName', 'LastName', 'Phone', 'PasswordHash', 'Token', 'ShippingAddressId', 'InvoiceAddressId', 'AvatarUrl', 'RewardPoints');
     } catch (err) {
       console.log(err);
       res.status(500);
@@ -41,7 +41,7 @@ const customersController = () => {
 
   const remove = async (req, res) => {
     try {
-      return await db.modify(req, res, 'DeleteCustomer');
+      return await db.modify(req, res, 'DeleteCustomer', true);
     } catch (err) {
       console.log(err);
       res.status(500);

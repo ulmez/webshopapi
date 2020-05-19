@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 /* eslint-disable consistent-return */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-console */
@@ -19,7 +20,7 @@ const createHateoasLinks = (req, records, hateoas) => {
   return recordset;
 };
 
-const createSqlParameters = (req, res, ...bodyProperties) => {
+const createSqlParameters = (req, res, checkHasId, ...bodyProperties) => {
   try {
     let hasAllBodyProperties = false;
     let id = '';
@@ -30,7 +31,11 @@ const createSqlParameters = (req, res, ...bodyProperties) => {
       id = `${req.params.Id}`;
     }
 
-    let sqlParameters = `${id} `;
+    let sqlParameters = '';
+
+    if (checkHasId) {
+      sqlParameters = `${id} `;
+    }
 
     bodyProperties.forEach((prop) => {
       let hasProperty = false;
@@ -51,19 +56,31 @@ const createSqlParameters = (req, res, ...bodyProperties) => {
         }
       }
 
-      if (typeof value === 'string') {
-        sqlParameters += `'${value}',`;
-      } else if (typeof value === 'number') {
-        sqlParameters += `${value},`;
-      } else if (typeof value === 'boolean') {
-        sqlParameters += value ? '1,' : '0,';
+      if (checkHasId) {
+        if (typeof value === 'string') {
+          sqlParameters += `'${value}',`;
+        } else if (typeof value === 'number') {
+          sqlParameters += `${value},`;
+        } else if (typeof value === 'boolean') {
+          sqlParameters += value ? '1,' : '0,';
+        }
+      } else {
+        if (typeof prop === 'string') {
+          sqlParameters += `'${prop}',`;
+        } else if (typeof prop === 'number') {
+          sqlParameters += `${prop},`;
+        } else if (typeof prop === 'boolean') {
+          sqlParameters += prop ? '1,' : '0,';
+        }
       }
     });
 
-    if (!hasAllBodyProperties && bodyProperties.length > 0) {
-      res.sqlError = 'Missing or erroneous properties.';
-      res.status(400);
-      return;
+    if (checkHasId) {
+      if (!hasAllBodyProperties && bodyProperties.length > 0) {
+        res.sqlError = 'Missing or erroneous properties.';
+        res.status(400);
+        return;
+      }
     }
 
     res.sqlParameters = sqlParameters.substring(0, sqlParameters.length - 1);
@@ -82,16 +99,28 @@ const jsonKeysToLowerCase = (record) => {
   return test;
 };
 
-const get = async (req, res, endpoint, hateoas = [], ...params) => {
+const get = async (req, res, endpoint, containsIdAndAtleastOneParam, hateoas = [], ...params) => {
   try {
     let parameters = '';
-    params.forEach((param) => {
-      parameters += `, ${param}`;
-    });
+    let query = '';
 
-    const query = req.params.Id > 0
-      ? `EXEC Get${endpoint} ${req.params.Id}${parameters}`
-      : `EXEC Get${endpoint}s ${parameters.length < 2 ? '' : parameters.substr(2)}`;
+    if (containsIdAndAtleastOneParam) {
+      params.forEach((param) => {
+        parameters += `, ${param}`;
+      });
+
+      query = req.params.Id > 0
+        ? `EXEC Get${endpoint} ${req.params.Id}${parameters}`
+        : `EXEC Get${endpoint}s ${parameters.length < 2 ? '' : parameters.substr(2)}`;
+    } else {
+      Object.keys(req.params).forEach((param) => {
+        parameters += `${req.params[param]},`;
+      });
+      parameters = parameters.substring(0, parameters.length - 1);
+      query = Object.keys(req.params).length > 1
+        ? `EXEC Get${endpoint} ${parameters}`
+        : `EXEC Get${endpoint}s ${parameters}`;
+    }
 
     await sql.connect(config);
     const result = await sql.query(query);
@@ -115,9 +144,9 @@ const get = async (req, res, endpoint, hateoas = [], ...params) => {
   }
 };
 
-const modify = async (req, res, sp, ...bodyProperties) => {
+const modify = async (req, res, sp, checkHasId, ...bodyProperties) => {
   try {
-    createSqlParameters(req, res, ...bodyProperties);
+    createSqlParameters(req, res, checkHasId, ...bodyProperties);
     if (res.sqlError) {
       return res.send(res.sqlError);
     }
@@ -132,7 +161,14 @@ const modify = async (req, res, sp, ...bodyProperties) => {
 
     // Endast POST
     res.status(201);
-    return res.json(jsonKeysToLowerCase(result.recordset[0]));
+
+    if (checkHasId) {
+      return res.json(jsonKeysToLowerCase(result.recordset[0]));
+    }
+
+    return res.json({
+      result: 'Posted successfully.',
+    });
   } catch (err) {
     console.log(err);
     throw err;
