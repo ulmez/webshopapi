@@ -8,6 +8,9 @@ function routes() {
   favoriteRouter.route('/favorites/:CustomerId')
     .get(controller.get);
 
+  favoriteRouter.route('/favoritescounts/:CustomerId')
+    .get(controller.getCount);
+
   favoriteRouter.route('/favorites/:CustomerId/:ProductId')
     .get(controller.get)
     .post(controller.post)

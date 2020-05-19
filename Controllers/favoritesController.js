@@ -19,6 +19,22 @@ const favoritesController = () => {
     }
   };
 
+  const getCount = async (req, res) => {
+    try {
+      const records = await db.get(req, res, 'favoritesCount', false);
+
+      if (records.length === 0) {
+        res.status(404);
+        return res.send('Could not find the resource.');
+      }
+
+      return res.json(records);
+    } catch (err) {
+      console.log(err);
+      return res.status(404);
+    }
+  };
+
   const post = async (req, res) => {
     try {
       return await db.modify(req, res, 'AddFavorite', false, req.params.CustomerId, req.params.ProductId);
@@ -41,6 +57,7 @@ const favoritesController = () => {
 
   return {
     get,
+    getCount,
     post,
     remove,
   };
