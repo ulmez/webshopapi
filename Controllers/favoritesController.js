@@ -21,7 +21,7 @@ const favoritesController = () => {
 
   const getCount = async (req, res) => {
     try {
-      const records = await db.get(req, res, 'favoritesCount', false);
+      const records = await db.get(req, res, 'favoritesCount', false, [], req.params.CustomerId);
 
       if (records.length === 0) {
         res.status(404);
