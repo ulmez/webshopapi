@@ -21,6 +21,7 @@ const favoriteRouter = require('./Routers/favoriteRouter')();
 const orderRouter = require('./Routers/orderRouter')();
 const orderRowRouter = require('./Routers/orderRowRouter')();
 const orderStatusRouter = require('./Routers/orderStatusRouter')();
+const paymentMethodRouter = require('./Routers/paymentMethodRouter')();
 
 app.use('/api', countryRouter);
 app.use('/api', brandRouter);
@@ -31,6 +32,7 @@ app.use('/api', favoriteRouter);
 app.use('/api', orderRouter);
 app.use('/api', orderRowRouter);
 app.use('/api', orderStatusRouter);
+app.use('/api', paymentMethodRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
