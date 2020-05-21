@@ -9,6 +9,9 @@ function routes() {
     .get(controller.get)
     .post(controller.post);
 
+  orderRowRouter.route('/orderrowsbyorderid/:OrderId')
+    .get(controller.getOrderRowsByOrderId);
+
   orderRowRouter.route('/orderrows/:Id')
     .get(controller.get)
     .put(controller.put)

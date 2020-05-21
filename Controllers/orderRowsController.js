@@ -19,6 +19,21 @@ const orderRowsController = () => {
     }
   };
 
+  const getOrderRowsByOrderId = async (req, res) => {
+    try {
+      const records = await db.get(req, res, 'OrderRowsByOrderId', false, [], req.params.OrderId);
+      if (records.length === 0) {
+        res.status(404);
+        return res.send('Could not find the resource.');
+      }
+
+      return res.json(records);
+    } catch (err) {
+      console.log(err);
+      return res.status(404);
+    }
+  };
+
   const post = async (req, res) => {
     try {
       return await db.modify(req, res, 'AddOrderRow', true, 'OrderId', 'ProductId', 'Price', 'PercentOff', 'Count', 'Total', 'Tax');
@@ -51,6 +66,7 @@ const orderRowsController = () => {
 
   return {
     get,
+    getOrderRowsByOrderId,
     post,
     put,
     remove,
