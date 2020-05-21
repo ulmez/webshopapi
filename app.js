@@ -19,6 +19,7 @@ const addressRouter = require('./Routers/addressRouter')();
 const customerRouter = require('./Routers/customerRouter')();
 const favoriteRouter = require('./Routers/favoriteRouter')();
 const orderRouter = require('./Routers/orderRouter')();
+const orderRowRouter = require('./Routers/orderRowRouter')();
 
 app.use('/api', countryRouter);
 app.use('/api', brandRouter);
@@ -27,6 +28,7 @@ app.use('/api', addressRouter);
 app.use('/api', customerRouter);
 app.use('/api', favoriteRouter);
 app.use('/api', orderRouter);
+app.use('/api', orderRowRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
