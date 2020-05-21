@@ -24,6 +24,7 @@ const orderStatusRouter = require('./Routers/orderStatusRouter')();
 const paymentMethodRouter = require('./Routers/paymentMethodRouter')();
 const productRouter = require('./Routers/productRouter')();
 const productCategoryRouter = require('./Routers/productCategoryRouter')();
+const productImageRouter = require('./Routers/productImageRouter')();
 
 app.use('/api', countryRouter);
 app.use('/api', brandRouter);
@@ -37,6 +38,7 @@ app.use('/api', orderStatusRouter);
 app.use('/api', paymentMethodRouter);
 app.use('/api', productRouter);
 app.use('/api', productCategoryRouter);
+app.use('/api', productImageRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
