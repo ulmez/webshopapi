@@ -13,11 +13,6 @@ function routes() {
     .post(controller.post)
     .delete(controller.remove);
 
-  //   productCategoryRouter.route('/productcategorys/:Id')
-  //     .get(controller.get)
-  //     .put(controller.put)
-  //     .delete(controller.remove);
-
   return productCategoryRouter;
 }
 
