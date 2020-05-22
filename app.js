@@ -30,6 +30,7 @@ const promoCodeRouter = require('./Routers/promoCodeRouter')();
 const promoTypeRouter = require('./Routers/promoTypeRouter')();
 const reviewRouter = require('./Routers/reviewRouter')();
 const shippingMethodRouter = require('./Routers/shippingMethodRouter')();
+const taxRouter = require('./Routers/taxRouter')();
 
 app.use('/api', countryRouter);
 app.use('/api', brandRouter);
@@ -49,6 +50,7 @@ app.use('/api', promoCodeRouter);
 app.use('/api', promoTypeRouter);
 app.use('/api', reviewRouter);
 app.use('/api', shippingMethodRouter);
+app.use('/api', taxRouter);
 
 app.server = app.listen(port, () => {
   console.log(`Running on port ${port}`);
