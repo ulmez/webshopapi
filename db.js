@@ -125,9 +125,11 @@ const get = async (req, res, endpoint, containsIdAndAtleastOneParam, hateoas = [
     await sql.connect(config);
     const result = await sql.query(query);
 
-    if (result.recordset.length === 0) {
-      res.status(404);
-      return result;
+    if (result.recordset !== undefined) {
+      if (result.recordset.length === 0) {
+        res.status(404);
+        return result;
+      }
     }
 
     hateoas.push({
@@ -135,9 +137,15 @@ const get = async (req, res, endpoint, containsIdAndAtleastOneParam, hateoas = [
       endpoint: `${endpoint}s`,
     });
 
-    const records = createHateoasLinks(req, result, hateoas);
+    let records = '';
 
-    return req.params.Id > 0 ? records[0] : records;
+    if (result.recordset !== undefined) {
+      records = createHateoasLinks(req, result, hateoas);
+
+      return req.params.Id > 0 ? records[0] : records;
+    }
+
+    return 'Operation Successful';
   } catch (err) {
     console.log(err);
     throw err;
@@ -162,7 +170,7 @@ const modify = async (req, res, sp, checkHasId, ...bodyProperties) => {
     // Endast POST
     res.status(201);
 
-    if (checkHasId) {
+    if (checkHasId && req.method === 'GET') {
       return res.json(jsonKeysToLowerCase(result.recordset[0]));
     }
 
